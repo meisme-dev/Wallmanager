@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <object class="GtkWindow" id="windowMain">
+    <property name="can-focus">0</property>
+    <property name="title" translatable="yes">Wallman</property>
+    <property name="default-width">800</property>
+    <property name="default-height">600</property>
+    <property name="icon-name">applications-graphics</property>
+    <child>
+      <placeholder/>
+    </child>
+  </object>
+</interface>
