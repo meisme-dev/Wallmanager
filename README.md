@@ -1,3 +1,3 @@
-# Wallmanager, a wallpaper manager!
+### Wallmanager, a wallpaper manager!
 
-#WIP
+# WIP
