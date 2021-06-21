@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <object class="GtkFileFilter" id="fileFilter">
+    <mime-types>
+    <mime-type>video/webm</mime-type>
+    <mime-type>video/mp4</mime-type>
+    <mime-type>video/mkv</mime-type>
+    <mime-type>video/x-flv</mime-type>
+    <mime-type> video/quicktime</mime-type>
+    <mime-type>video/x-msvideo</mime-type>
+    <mime-type>video/x-ms-wmv</mime-type>
+  </mime-types>
+  </object>
+  <object class="GtkWindow" id="fileDialog">
+    <property name="can-focus">0</property>
+    <property name="child">
+      <object class="GtkBox">
+        <property name="can-focus">0</property>
+        <property name="orientation">vertical</property>
+        <property name="baseline-position">bottom</property>
+        <child>
+          <object class="GtkFileChooserWidget" id="fileWidget">
+            <property name="can-focus">0</property>
+            <property name="hexpand">1</property>
+            <property name="vexpand">1</property>
+            <property name="filter">fileFilter</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="can-focus">0</property>
+            <property name="halign">end</property>
+            <property name="valign">center</property>
+            <property name="hexpand">0</property>
+            <property name="vexpand">0</property>
+            <child>
+              <object class="GtkButton" id="cancelButton">
+                <property name="label" translatable="yes">Cancel</property>
+                <property name="receives-default">1</property>
+                <property name="halign">end</property>
+                <property name="valign">center</property>
+                <property name="margin-end">3</property>
+                <property name="margin-end">3</property>
+                <property name="margin-top">3</property>
+                <property name="margin-bottom">3</property>
+                <property name="hexpand">1</property>
+                <property name="vexpand">1</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="openButton">
+                <property name="label" translatable="yes">Open</property>
+                <property name="receives-default">1</property>
+                <property name="halign">end</property>
+                <property name="valign">center</property>
+                <property name="margin-end">3</property>
+                <property name="margin-top">3</property>
+                <property name="margin-bottom">3</property>
+                <property name="hexpand">1</property>
+                <property name="vexpand">1</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </property>
+  </object>
+  <object class="GtkWindow" id="windowWizard">
+    <property name="can-focus">1</property>
+    <property name="child">
+      <object class="GtkGrid" id="parentGrid">
+        <property name="can-focus">1</property>
+        <child>
+          <object class="GtkGrid" id="childGrid">
+            <property name="can-focus">1</property>
+            <property name="hexpand">1</property>
+            <property name="vexpand">1</property>
+            <child>
+              <object class="GtkEntry" id="fileLocation">
+                <property name="valign">center</property>
+                <property name="margin-start">48</property>
+                <property name="hexpand">1</property>
+                <property name="vexpand">1</property>
+                <layout>
+                  <property name="column">0</property>
+                  <property name="row">0</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="fileChooserButton">
+                <property name="label" translatable="yes">Choose File</property>
+                <property name="receives-default">1</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="margin-end">48</property>
+                <layout>
+                  <property name="column">1</property>
+                  <property name="row">0</property>
+                </layout>
+              </object>
+            </child>
+            <layout>
+              <property name="column">0</property>
+              <property name="row">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="finishButton">
+            <property name="label" translatable="yes">Finish</property>
+            <property name="width-request">0</property>
+            <property name="height-request">0</property>
+            <property name="receives-default">1</property>
+            <property name="halign">center</property>
+            <property name="valign">end</property>
+            <property name="margin-bottom">16</property>
+            <layout>
+              <property name="column">0</property>
+              <property name="row">3</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="can-focus">0</property>
+            <property name="halign">center</property>
+            <property name="valign">end</property>
+            <property name="margin-top">36</property>
+            <property name="label" translatable="yes">Video Location</property>
+            <layout>
+              <property name="column">0</property>
+              <property name="row">0</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="GtkVideo" id="vPlayer">
+            <property name="margin-start">48</property>
+            <property name="margin-end">48</property>
+            <property name="margin-top">3</property>
+            <property name="margin-bottom">32</property>
+            <layout>
+              <property name="column">0</property>
+              <property name="row">2</property>
+            </layout>
+          </object>
+        </child>
+        <layout>
+          <property name="column">0</property>
+          <property name="row">0</property>
+        </layout>
+      </object>
+    </property>
+  </object>
+  <object class="GtkWindow" id="windowMain">
+    <property name="can-focus">0</property>
+    <property name="title" translatable="yes">Wallman</property>
+    <property name="default-width">800</property>
+    <property name="default-height">600</property>
+    <property name="icon-name">applications-graphics</property>
+    <property name="decorated">0</property>
+    <property name="child">
+      <object class="GtkBox">
+        <property name="can-focus">0</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkHeaderBar">
+            <property name="can-focus">0</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label">
+            <property name="vexpand">1</property>
+            <property name="can-focus">0</property>
+            <property name="valign">end</property>
+            <property name="label" translatable="yes">You currently don&apos;t have any wallpapers configured</property>
+            <property name="wrap">1</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="addButton">
+            <property name="vexpand">1</property>
+            <property name="label" translatable="yes">+ Add</property>
+            <property name="width-request">72</property>
+            <property name="height-request">36</property>
+            <property name="receives-default">1</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+          </object>
+        </child>
+      </object>
+    </property>
+  </object>
+</interface>
