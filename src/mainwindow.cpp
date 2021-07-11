@@ -102,4 +102,4 @@ int main(int argc, char** argv){
     widgets.app = Gtk::Application::create();
     widgets.app->signal_activate().connect([] () { initialize(); }); 
     return widgets.app->run(argc, argv);
-}
+} 
