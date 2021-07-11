@@ -1,89 +1,105 @@
 #include <gtkmm-4.0/gtkmm.h>
 #include <iostream>
 #include <boost/regex.hpp>
+#include "mainwindow.hpp"
 
-Glib::RefPtr<Gtk::Application> app;
-Gtk::Button *pButton = nullptr;
-Gtk::Button *pCancelButton = nullptr;
-Gtk::Button *pFileChooserButton = nullptr;
-Gtk::Button *pFinishButton = nullptr;
-Gtk::Button *pOpenButton = nullptr;
-Gtk::Entry *pEntry = nullptr;
-Gtk::FileChooserWidget *pWidget = nullptr;
-Gtk::Grid *pGrid = nullptr;
-Gtk::Video *pVideo = nullptr;
-Gtk::Window *pFileDialog = nullptr;
-Gtk::Window *pWindow = nullptr;
-Gtk::Window *pWizard = nullptr;
-boost::regex valid_url("((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");
-std::string pLink;
-Glib::RefPtr<Gio::File> fileName = NULL;
+namespace mainWindow{
+    boost::regex valid_url("((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");
+    std::string pLink;
+    Glib::RefPtr<Gio::File> fileName = NULL;
 
-void on_addButton_click(){
-    pWizard->show();
-}
-
-void on_fileButton_click(){
-    pFileDialog->show();
-}
-
-bool url_valid(std::string url){
-    return boost::regex_match(url, valid_url);
-}
-
-void on_entry_changed(){
-    pLink = pEntry->get_text();
-    if(url_valid(pLink) && pLink.find("youtube")){
-        std::string commandLine = std::string("youtube-dl ") + std::string(pLink) + std::string(" > tmp.log");
-        system(commandLine.c_str());
-        pVideo->set_filename("");
+    class Widgets {
+        public:
+            int widgetId;
+            Glib::RefPtr<Gtk::Application> app;
+            Gtk::Button *pButton = nullptr;
+            Gtk::Button *pCancelButton = nullptr;
+            Gtk::Button *pFileChooserButton = nullptr;
+            Gtk::Button *pFinishButton = nullptr;
+            Gtk::Button *pOpenButton = nullptr;
+            Gtk::Entry *pEntry = nullptr;
+            Gtk::FileChooserWidget *pWidget = nullptr;
+            Gtk::Grid *pGrid = nullptr;
+            Gtk::Video *pVideo = nullptr;
+            Gtk::Window *pFileDialog = nullptr;
+            Gtk::Window *pWindow = nullptr;
+            Gtk::Window *pWizard = nullptr;
+        ~Widgets(){
+            std::cout << "Widget with ID: " << widgetId << " destroyed." << std::endl;
+        };
+    };
+    Widgets widgets;
+    
+    void on_addButton_click(){
+        widgets.pWizard->show();
     }
-    else{
-        pVideo->set_filename(pLink);
+
+    void on_fileButton_click(){
+        widgets.pFileDialog->show();
+    }
+
+    bool url_valid(std::string url){
+        return boost::regex_match(url, valid_url);
+    }
+
+    void on_entry_changed(){
+        pLink = widgets.pEntry->get_text();
+        if(url_valid(pLink) && pLink.find("youtube")){
+            std::string args = "youtube-dl";
+            args += strdup(pLink.c_str());
+            g_spawn_command_line_async(args.c_str(), NULL);
+            widgets.pVideo->set_filename("");
+        }
+        else{
+            widgets.pVideo->set_filename(pLink);
+        }
+    }
+
+    void on_finishButton_click(){
+        system("/usr/share/Wallman/bin/Wallman-Desktop &");
+    }
+
+    void on_cancelButton_click(){
+        widgets.pFileDialog->hide();
+    }
+
+    void on_openButton_click(){
+        fileName = widgets.pWidget->get_file();
+        pLink = fileName->get_path();
+        widgets.pEntry->set_text(pLink);
+        widgets.pVideo->set_filename(pLink);
+        widgets.pFileDialog->hide();
+    }
+
+    void initialize(){
+        auto builder = Gtk::Builder::create_from_file("/usr/share/Wallman/bin/gui/window.glade");
+        widgets.pButton = ADD_BUTTON;
+        widgets.pCancelButton = CANCEL_BUTTON;
+        widgets.pFileChooserButton = FILE_CHOOSER_BUTTON;
+        widgets.pFinishButton = FINISH_BUTTON;
+        widgets.pOpenButton = OPEN_BUTTON;
+        widgets.pEntry = FILE_LOCATION_ENTRY;
+        widgets.pWidget = FILE_WIDGET;
+        widgets.pGrid = CHILD_GRID;
+        widgets.pVideo = VIDEO_PLAYER;
+        widgets.pFileDialog = FILE_DIALOG;
+        widgets.pWindow = MAIN_WINDOW;
+        widgets.pWizard = WIZARD_WINDOW;
+        widgets.pButton->signal_clicked().connect([] () { on_addButton_click(); }); 
+        widgets.pCancelButton->signal_clicked().connect([] () { on_cancelButton_click(); }); 
+        widgets.pFileChooserButton->signal_clicked().connect([] () { on_fileButton_click(); }); 
+        widgets.pFinishButton->signal_clicked().connect([] () { on_finishButton_click(); }); 
+        widgets.pOpenButton->signal_clicked().connect([] () { on_openButton_click(); }); 
+        widgets.pEntry->signal_changed().connect([] () { on_entry_changed(); }); 
+        widgets.app->add_window(*widgets.pWindow);
+        widgets.pWindow->show();
     }
 }
 
-void on_finishButton_click(){
-    system("/usr/share/Wallman/bin/Wallman-Desktop &");
-}
-
-void on_cancelButton_click(){
-    pFileDialog->close();
-}
-
-void on_openButton_click(){
-    fileName = pWidget->get_file();
-    pLink = fileName->get_path();
-    pEntry->set_text(pLink);
-    pVideo->set_filename(pLink);
-}
-
-void initialize(){
-    auto builder = Gtk::Builder::create_from_file("/usr/share/Wallman/bin/gui/window.glade");
-    pButton = builder->get_widget<Gtk::Button>("addButton");
-    pCancelButton = builder->get_widget<Gtk::Button>("cancelButton");
-    pFileChooserButton = builder->get_widget<Gtk::Button>("fileChooserButton");
-    pFinishButton = builder->get_widget<Gtk::Button>("finishButton");
-    pOpenButton = builder->get_widget<Gtk::Button>("openButton");
-    pEntry = builder->get_widget<Gtk::Entry>("fileLocation");
-    pWidget = builder->get_widget<Gtk::FileChooserWidget>("fileWidget");
-    pGrid = builder->get_widget<Gtk::Grid>("childGrid");
-    pVideo = builder->get_widget<Gtk::Video>("vPlayer");
-    pFileDialog = builder->get_widget<Gtk::Window>("fileDialog");
-    pWindow = builder->get_widget<Gtk::Window>("windowMain");
-    pWizard = builder->get_widget<Gtk::Window>("windowWizard");
-    pButton->signal_clicked().connect([] () { on_addButton_click(); }); 
-    pCancelButton->signal_clicked().connect([] () { on_cancelButton_click(); }); 
-    pFileChooserButton->signal_clicked().connect([] () { on_fileButton_click(); }); 
-    pFinishButton->signal_clicked().connect([] () { on_finishButton_click(); }); 
-    pOpenButton->signal_clicked().connect([] () { on_openButton_click(); }); 
-    pEntry->signal_changed().connect([] () { on_entry_changed(); }); 
-    app->add_window(*pWindow);
-    pWindow->show();
-}
+using namespace mainWindow;
 
 int main(int argc, char** argv){
-    app = Gtk::Application::create();
-    app->signal_activate().connect([] () { initialize(); }); 
-    return app->run(argc, argv);
+    widgets.app = Gtk::Application::create();
+    widgets.app->signal_activate().connect([] () { initialize(); }); 
+    return widgets.app->run(argc, argv);
 }
