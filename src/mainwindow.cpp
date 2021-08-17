@@ -2,11 +2,17 @@
 #include <iostream>
 #include <boost/regex.hpp>
 #include "mainwindow.hpp"
+#include <sstream>
+#include <unistd.h>
+#include <limits.h>
 
 namespace mainWindow{
     boost::regex valid_url("((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");
     std::string pLink;
     Glib::RefPtr<Gio::File> fileName = NULL;
+    char cwd[PATH_MAX];
+    std::string current_path;
+    std::string gui_file = "gui/window.glade";
 
     class Widgets {
         public:
@@ -72,7 +78,7 @@ namespace mainWindow{
     }
 
     void initialize(){
-        auto builder = Gtk::Builder::create_from_file("/usr/share/Wallman/bin/gui/window.glade");
+        auto builder = Gtk::Builder::create_from_file(current_path.append(gui_file));
         widgets.pButton = ADD_BUTTON;
         widgets.pCancelButton = CANCEL_BUTTON;
         widgets.pFileChooserButton = FILE_CHOOSER_BUTTON;
@@ -96,9 +102,24 @@ namespace mainWindow{
     }
 }
 
+std::string do_readlink(std::string const& path) {
+    char buff[PATH_MAX];
+    ssize_t len = ::readlink(path.c_str(), buff, sizeof(buff)-1);
+    if (len != -1) {
+      buff[len] = '\0';
+      return std::string(buff);
+    }
+    std::cerr << "Readlink failed for " << path << std::endl;
+    return std::string(NULL);
+}
+
 using namespace mainWindow;
 
-int main(int argc, char** argv){
+int main(int argc, char **argv){
+    current_path = do_readlink("/proc/self/cwd");
+    if (!current_path.empty() && *current_path.rbegin() != '/'){
+        current_path += '/';
+    }
     widgets.app = Gtk::Application::create();
     widgets.app->signal_activate().connect([] () { initialize(); }); 
     return widgets.app->run(argc, argv);

@@ -79,6 +79,7 @@
             <child>
               <object class="GtkEntry" id="fileLocation">
                 <property name="valign">center</property>
+                <property name="margin-top">16</property>
                 <property name="margin-start">48</property>
                 <property name="hexpand">1</property>
                 <property name="vexpand">1</property>
@@ -94,6 +95,9 @@
                 <property name="receives-default">1</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
+                <property name="hexpand">1</property>
+                <property name="vexpand">1</property>
+                <property name="margin-top">16</property>
                 <property name="margin-end">48</property>
                 <layout>
                   <property name="column">1</property>
@@ -108,6 +112,32 @@
           </object>
         </child>
         <child>
+          <object class="GtkComboBoxText">
+          <property name="can-focus">0</property>
+          <property name="has-entry">1</property>
+          <property name="halign">center</property>
+          <property name="valign">center</property>
+          <property name="margin-end">16</property>
+          <property name="margin-top">16</property>
+          <layout>
+            <property name="column">0</property>
+            <property name="row">2</property>
+          </layout>
+          <items>
+            <item id="0" translatable="yes">Video</item>
+            <item id="1" translatable="yes">Webpage</item>
+            <item id="2" translatable="yes">Image</item>
+          </items>
+          <property name="child">
+            <object class="GtkEntry">
+              <property name="visible">1</property>
+              <property name="can-focus">1</property>
+              <property name="text" translatable="yes">Video</property>
+            </object>
+          </property>
+          </object>
+        </child>
+        <child>
           <object class="GtkButton" id="finishButton">
             <property name="label" translatable="yes">Finish</property>
             <property name="width-request">0</property>
@@ -118,7 +148,7 @@
             <property name="margin-bottom">16</property>
             <layout>
               <property name="column">0</property>
-              <property name="row">3</property>
+              <property name="row">4</property>
             </layout>
           </object>
         </child>
@@ -139,11 +169,11 @@
           <object class="GtkVideo" id="vPlayer">
             <property name="margin-start">48</property>
             <property name="margin-end">48</property>
-            <property name="margin-top">3</property>
+            <property name="margin-top">16</property>
             <property name="margin-bottom">32</property>
             <layout>
               <property name="column">0</property>
-              <property name="row">2</property>
+              <property name="row">3</property>
             </layout>
           </object>
         </child>

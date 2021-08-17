@@ -1,3 +1,5 @@
+#pragma once
+
 #define ADD_BUTTON builder->get_widget<Gtk::Button>("addButton")
 #define CANCEL_BUTTON builder->get_widget<Gtk::Button>("cancelButton")
 #define FILE_CHOOSER_BUTTON builder->get_widget<Gtk::Button>("fileChooserButton")

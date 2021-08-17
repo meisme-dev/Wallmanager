@@ -16,9 +16,9 @@ int main( int argc, char **argv)
   window.set_type_hint(Gdk::WINDOW_TYPE_HINT_DESKTOP);
   window.set_accept_focus(0);
   window.set_wmclass(pWmName, pWmClass);
-  window.add( *pWidget );
-  webkit_web_view_load_uri(pWebView, "http://duckduckgo.com");
+  window.add(*pWidget);
+  webkit_web_view_load_uri(pWebView, "https://youtube.com");
   window.show_all();
-  app->run( window );  
-  exit( 0 );
+  app->run(window);  
+  exit(0);
 }
