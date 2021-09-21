@@ -21,14 +21,14 @@ BIN_DIR := /usr/bin
 
 build:
 	mkdir $(OUTPUT_DEST)
-	c++ $(CCFLAGS) $(GTK4LIBS) $(GSTLIBS) $(MAIN_SRC) -o $(OUTPUT_DEST)/$(MAIN_BIN)
-	c++ $(CCFLAGS) $(GTK3LIBS) $(WEBKITLIBS) $(ROOT_SRC) -o $(OUTPUT_DEST)/$(ROOT_BIN)
+	$(CC) $(CCFLAGS) $(GTK4LIBS) $(GSTLIBS) $(MAIN_SRC) -o $(OUTPUT_DEST)/$(MAIN_BIN)
+	$(CC) $(CCFLAGS) $(GTK3LIBS) $(WEBKITLIBS) $(ROOT_SRC) -o $(OUTPUT_DEST)/$(ROOT_BIN)
 
 clean:
 	rm -r $(OUTPUT_DEST)
 
 run:
-	$(MAIN_BIN)
+	$(OUTPUT_DEST)/$(MAIN_BIN)
 
 install:
 	mkdir -p $(GUI_DEST)
@@ -43,6 +43,7 @@ install:
 	chmod g+rx $(OUTPUT_DEST)/$(ROOT_BIN)
 	chmod g+rx $(DESKTOP_DEST)/$(APP_NAME).desktop
 	ln -sf $(BIN_DEST)/$(MAIN_BIN) $(BIN_DIR)/$(MAIN_BIN)
+	ln -sf $(BIN_DEST)/$(ROOT_BIN) $(BIN_DIR)/$(ROOT_BIN)
 	
 
 uninstall:

@@ -2,12 +2,9 @@
 #include <iostream>
 #include <boost/regex.hpp>
 #include "mainwindow.hpp"
-#include <sstream>
-#include <unistd.h>
-#include <limits.h>
 
 std::string current_path;
-std::string gui_file = "config/gui/window.glade";
+std::string gui_file = "config/gui/wallman.ui";
 
 void initialize(){
     auto builder = Gtk::Builder::create_from_file(current_path.append(gui_file));

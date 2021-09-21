@@ -6,7 +6,6 @@ namespace event_handlers{
     std::string pLink;
     Glib::RefPtr<Gio::File> fileName = NULL;
 
-
     void on_addButton_click(){
         pWizard->show();
     }
@@ -33,7 +32,8 @@ namespace event_handlers{
     }
 
     void on_finishButton_click(){
-        system("/usr/share/Wallman/bin/Wallman-Desktop &");
+        std::string args = "/bin/env wallman_desktop";
+        g_spawn_command_line_async(args.c_str(), NULL);
     }
 
     void on_cancelButton_click(){
